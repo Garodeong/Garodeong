@@ -25,7 +25,7 @@ pip install -r requriements.txt
 4. 모델 실행
 
 ```bash
-python detect.py --weights best.pt --view-img --source "이미지 경로" 웹캠 사용원할때, 0
+python detect.py --weights stairv2_epoch100.pt --view-img --source "이미지 경로" 웹캠 사용원할때, 0
 ```
 
 실행 결과는 runs 폴더에 저장됨.

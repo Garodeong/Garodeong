@@ -7,8 +7,13 @@ yolov5/runs
 yolov5/stair-1
 yolov5/test_video
 
-yolov5/
-
 yolov5/coco128.zip
 yolov5/prediction.csv
 yolov5/tutorial.ipynb
+yolov5/.github
+yolov5/__pycache__
+yolov5/.dockerignoer
+yolov5/.gitattributes
+yolov5/.gitignore
+
+yolov5/.jpg
