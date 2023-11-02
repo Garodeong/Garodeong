@@ -101,3 +101,6 @@ normalized result에서 1~4 elements는 x_center, y_center, width, height이다.
 
 
 <img width="100%" src="./paints/result.gif"/>  
+
+
+결과들은 모델이 돌아가는 중에 계속해서 작성이 됨.
