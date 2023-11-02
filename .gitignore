@@ -15,5 +15,12 @@ yolov5/__pycache__
 yolov5/.dockerignoer
 yolov5/.gitattributes
 yolov5/.gitignore
+yolov5/README.md
+yolov5/README.zh-CN.md
 
-yolov5/.jpg
+yolov5/*.mp4
+yolov5/*.jpg
+
+
+#paints
+paints/result.gif
