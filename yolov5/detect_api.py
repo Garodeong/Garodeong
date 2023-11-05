@@ -262,4 +262,4 @@ def api(
 
 
 #api(weights=f"{ROOT}/customdataset_epoch100.pt",view_img=True, source=0)
-api(weights=f"{ROOT}/yolov5s.pt",view_img=True, source=0, save_txt=True, device=0)
+api(weights=f"{ROOT}/yolov5s.pt",view_img=True, source=0, save_txt=True, device='')

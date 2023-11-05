@@ -24,3 +24,7 @@ yolov5/*.jpg
 
 #paints
 paints/result.gif
+
+
+#Rasberry Pi4
+Rasberry/captures
