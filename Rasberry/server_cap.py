@@ -1,11 +1,18 @@
 import _thread
 import socket
-import websockets
 import struct
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from yolov5 import detect_api
 
 
 def threaded(client_socket, addr, i):
     print("Connected by: ", addr[0], addr[1])
+    model, stride, names, pt, imgsz = detect_api.model_load(weights='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/customdataset_epoch100.pt', device="")
+    save_dir = detect_api.make_dir(name="raspi")
+    print("Model Loading Success!!!")
     while True:
         try:
             path[-1] = str(i)
@@ -16,6 +23,7 @@ def threaded(client_socket, addr, i):
                 file.write(image_data)
             print("Received and Saved Success!!")
             i += 1
+            detect_api.api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,view_img=True, source=f"{'/'.join(path)}.jpg", save_txt=True)
         except Exception as e:
             print("Disconnected by ", addr[0], ":", addr[1])
             print(f"Error: {e}")
@@ -59,6 +67,11 @@ server_socket.listen()
 print("server start")
 
 while True:
-    print("wait")
-    cs, addr = server_socket.accept()
-    _thread.start_new_thread(threaded, (cs, addr, i))
+    try:
+        print("wait")
+        cs, addr = server_socket.accept()
+        _thread.start_new_thread(threaded, (cs, addr, i))
+    except Exception as e:
+        print(f"Error: {e}")
+        break
+server_socket.close()
