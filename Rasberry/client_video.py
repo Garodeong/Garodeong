@@ -23,11 +23,11 @@ def record(picam2, encoder, client_socket):
 	cam.start_preview(p2.Preview.QTGL)
 	cam.start_recording(encoder,filename)
 	_thread.start_new_thread(send_video, (filename, client_socket))
-	while True:
-		pass
-	#time.sleep(10)
-	#cam.stop_recording()
-	#cam.stop_preview()
+	#while True:
+	#	pass
+	time.sleep(10)
+	cam.stop_recording()
+	cam.stop_preview()
 	"""
 	while True:
 		with open(filename, 'rb') as file:
@@ -36,11 +36,14 @@ def record(picam2, encoder, client_socket):
 				client_socket.send(data)
 				data = file.read()
 	"""
-	except Exception as e:
-		print(f"Error: {e}")
-		picam2.stop_preview()
-		picam2.stop()
-	
+	cur = time.time()
+	with open(filename, 'rb') as file:
+			data = file.read()
+			while data:
+				client_socket.send(data)
+				data = file.read()
+	eta = time.time() - cur
+	#transfer_rate = 
 
 HOST = '192.168.200.169'
 PORT = 8080
