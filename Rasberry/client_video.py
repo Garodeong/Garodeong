@@ -44,6 +44,7 @@ def record(picam2, encoder, client_socket):
 				data = file.read()
 	eta = time.time() - cur
 	#transfer_rate = 
+
 	
 
 HOST = '192.168.200.169'
