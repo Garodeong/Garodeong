@@ -28,3 +28,15 @@ paints/result.gif
 
 #Rasberry Pi4
 Rasberry/captures
+Rasberry/__pycache__
+Rasberry/captures/*.jpg
+Rasberry/videos/*.h264
+Rasberry/cap.py
+Rasberry/cctv.py
+Rasberry/client.py
+Rasberry/server.py
+Rasberry/cmd_test.py
+Rasberry/out.txt
+Rasberry/server.py
+Rasberry/streaming.py
+Rasberry/video_streaming.py
