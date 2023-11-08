@@ -43,7 +43,7 @@ def record(picam2, encoder, client_socket):
 				client_socket.send(data)
 				data = file.read()
 	eta = time.time() - cur
-	transfer_rate = 
+	#transfer_rate = 
 
 HOST = '192.168.200.169'
 PORT = 8080
