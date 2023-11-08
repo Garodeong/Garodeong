@@ -23,7 +23,7 @@ def threaded(client_socket, addr, i):
                 file.write(image_data)
             print("Received and Saved Success!!")
             i += 1
-            detect_api.api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,view_img=True, source=f"{'/'.join(path)}.jpg", save_txt=True)
+            detect_api.api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,view_img=True, source=f"{'/'.join(path)}.jpg", save_txt=False)
         except Exception as e:
             print("Disconnected by ", addr[0], ":", addr[1])
             print(f"Error: {e}")

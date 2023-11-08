@@ -286,6 +286,6 @@ def api(
 #api(weights=f"{ROOT}/customdataset_epoch100.pt",view_img=True, source=0)
 #api(weights=f"{ROOT}/yolov5s.pt",view_img=True, source=0, save_txt=True, device='')
 if __name__=="__main__":    
-    model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/yolov5s.pt", device='')
+    model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/customdataset_epoch100.pt", device='')
     save_dir = make_dir()
     api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,view_img=True, source='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/38.jpg', save_txt=False)
