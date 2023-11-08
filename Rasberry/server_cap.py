@@ -10,7 +10,7 @@ from yolov5 import detect_api
 
 def threaded(client_socket, addr, i):
     print("Connected by: ", addr[0], addr[1])
-    model, stride, names, pt, imgsz = detect_api.model_load(weights='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/customdataset_epoch100.pt', device="")
+    model, stride, names, pt, imgsz = detect_api.model_load(weights='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/yolov5s.pt', device="")
     save_dir = detect_api.make_dir(name="raspi")
     print("Model Loading Success!!!")
     while True:

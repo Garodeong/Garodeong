@@ -45,6 +45,8 @@ def record(picam2, encoder, client_socket):
 	eta = time.time() - cur
 	#transfer_rate = 
 
+	
+
 HOST = '192.168.200.169'
 PORT = 8080
 
