@@ -18,8 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-workspace.xml
-.idea
+.idea/workspace.xml
 *.iws
 *.iml
 *.ipr
