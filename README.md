@@ -100,6 +100,9 @@ Object Detection은 location prediction후에, 해당 location에 대한 classif
 normalized result에서 1~4 elements는 x_center, y_center, width, height이다.
 <img width="100%" src="./paints/yolov5_label_format.jpg" />  
 
+- 실제 추론 영상
 [![실제 추론 영상](http://img.youtube.com/vi/8jdNFkHKAYk/0.jpg )](https://youtu.be/8jdNFkHKAYk)
 
+- 라즈베리파이 -> 로컬 노트북 YOLOv5
 결과들은 모델이 돌아가는 중에 계속해서 작성이 됨.
+[![실제 추론 영상](http://img.youtube.com/vi/FeTxiVqJM0Y/0.jpg )](https://youtu.be/FeTxiVqJM0Y)
