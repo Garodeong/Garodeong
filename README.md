@@ -1,11 +1,18 @@
 <img width="100%" src="./paints/logo.PNG" />  
 
+
 ---
 - 프로젝트 개념도
-<img width="100%" src="./paints/Flow.jpg" />  
----
-## 1. Computer Vision (Yolov5)
-### 1-1. 실행 방법
+<img width="100%" src="./paints/Flow.jpg" />
+
+1. Rasberry Pi에서 영상 취득
+2. 취득한 영상을 스트리밍 서버로 실행
+3. YOLOv5는 해당 스트리밍 서버를 input으로 받아, detect 수행
+4. 5 프레임 연속으로 탐지된 객체 이름을 socket 통신으로 전송
+5. 전달받은 객체 이름을 라즈베리 파이의 TTS를 통해 음성 출력
+---  
+## 1. Computer Vision (Yolov5)  
+### 1-1. 실행 방법  
 1. 가상환경 생성
 
 ```bash
@@ -102,6 +109,10 @@ normalized result에서 1~4 elements는 x_center, y_center, width, height이다.
 
 - 실제 추론 영상  
 [![실제 추론 영상](http://img.youtube.com/vi/8jdNFkHKAYk/0.jpg )](https://youtu.be/8jdNFkHKAYk)
+
+
+## 2. Rasberry Pi
+
 
 - 라즈베리파이 -> 로컬 노트북 YOLOv5  
 [![실제 추론 영상](http://img.youtube.com/vi/FeTxiVqJM0Y/0.jpg )](https://youtu.be/FeTxiVqJM0Y)
