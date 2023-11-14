@@ -20,7 +20,7 @@ public class UserService {
     // Spring Security를 사용한 로그인 구현 시 사용
     // private final BCryptPasswordEncoder encoder;
 
-    /**
+    /*
      * loginId 중복 체크
      * 회원가입 기능 구현 시 사용
      * 중복되면 true return
