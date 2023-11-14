@@ -1,0 +1,33 @@
+# Vision Model part
+yolov5/data
+yolov5/merdiven-v2.0-1
+yolov5/my_custom
+yolov5/potholes_detection-3
+yolov5/runs
+yolov5/stair-1
+yolov5/test_video
+
+yolov5/coco128.zip
+yolov5/prediction.csv
+yolov5/tutorial.ipynb
+yolov5/.github
+yolov5/__pycache__
+yolov5/.dockerignoer
+yolov5/.gitattributes
+yolov5/.gitignore
+yolov5/README.md
+yolov5/README.zh-CN.md
+
+yolov5/*.mp4
+yolov5/*.jpg
+
+
+#paints
+paints/result.gif
+
+
+#Rasberry Pi4
+Rasberry/__pycache__
+Rasberry/captures
+Rasberry/videos
+Rasberry/test

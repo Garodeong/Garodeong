@@ -35,6 +35,7 @@ from pathlib import Path
 from collections import defaultdict
 import winsound as sd
 from typing import List
+import socket
 
 import torch
 
@@ -51,7 +52,6 @@ from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadScreensh
 from utils.general import (LOGGER, Profile, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
                            increment_path, non_max_suppression, print_args, scale_boxes, strip_optimizer, xyxy2xywh)
 from utils.torch_utils import select_device, smart_inference_mode
-
 
 
 def model_load(
@@ -84,8 +84,10 @@ def make_dir(
 
 @smart_inference_mode()
 def api(
-        model, stride, names, pt, imgsz, save_dir,
+        model, stride, names, pt, imgsz, save_dir, 
+        HOST, PORT,
         source=ROOT / 'data/images',  # file/dir/URL/glob/screen/0(webcam)    
+        
         conf_thres=0.25,  # confidence threshold
         iou_thres=0.45,  # NMS IOU threshold
         max_det=1000,  # maximum detections per image
@@ -113,6 +115,9 @@ def api(
     webcam = source.isnumeric() or source.endswith('.streams') or (is_url and not is_file)
     screenshot = source.lower().startswith('screen')
     objs = defaultdict(int) # for beep
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((HOST, PORT))
 
     if is_url and is_file:
         source = check_file(source)  # download
@@ -216,6 +221,8 @@ def api(
                     if objs[int(c)] >= 5:
                         sd.Beep(1000,2000)
                     """
+                    if objs[int(c)] >= 5:
+                        client_socket.send(names[int(c)].encode())
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
@@ -286,6 +293,8 @@ def api(
 #api(weights=f"{ROOT}/customdataset_epoch100.pt",view_img=True, source=0)
 #api(weights=f"{ROOT}/yolov5s.pt",view_img=True, source=0, save_txt=True, device='')
 if __name__=="__main__":    
-    model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/customdataset_epoch100.pt", device='')
+    #model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/customdataset_epoch100.pt", device='')
+    model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/yolov5s.pt", device='')
     save_dir = make_dir()
-    api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,view_img=True, source='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/38.jpg', save_txt=False)
+    api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,client_socket=client_socket,
+    view_img=True, source="http://192.168.200.150:8000/stream.mjpg", save_txt=False)
