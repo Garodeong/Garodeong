@@ -4,7 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b6ec2b6-445b-42a1-bcdb-4367273b4327" name="Changes" comment="[Backend] resolve conflict" />
+    <list default="true" id="4b6ec2b6-445b-42a1-bcdb-4367273b4327" name="Changes" comment="[Backend] resolve conflict">
+      <change afterPath="$PROJECT_DIR$/Web/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/screenshot/web.home.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/screenshot/web.join.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/screenshot/web.login(1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/screenshot/web.login.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Config/BCryptConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Controller/SessionLoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/DTO/JoinRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/DTO/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Domain/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Domain/UserRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/Service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/java/com/example/Web/WebApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/static/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/static/image/가로등.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/templates/join.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/src/test/java/com/example/Web/WebApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_stephenc_jcip_jcip_annotations_1_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nimbusds_content_type_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nimbusds_lang_tag_1_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nimbusds_nimbus_jose_jwt_9_22.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_nimbusds_oauth2_oidc_sdk_9_35.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_oauth2_client_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_security_2_7_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_config_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_core_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_crypto_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_oauth2_client_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_oauth2_core_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_oauth2_jose_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_web_5_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-14__8_34__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-14__8_34__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,20 +82,21 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="HTML File" />
         <option value="CSS File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Weppage" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Web" />
     <option name="RESET_MODE" value="HARD" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -117,6 +165,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.WebApplication" />
+        <item itemvalue="Spring Boot.WebApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -161,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699969109796</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[Backend] resolve conflict">
+      <created>1699970309574</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699970309574</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,7 +228,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Webpage" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
