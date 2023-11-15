@@ -27,7 +27,7 @@ public class JoinRequest {
     private String deviceId;
 
     // 비밀번호 암호화 X
-    public User toEntity() {
+   /* public User toEntity() {
         return User.builder()
                 .loginId(this.loginId)
                 .password(this.password)
@@ -35,7 +35,7 @@ public class JoinRequest {
                 .role(UserRole.USER)
                 .deviceId(this.deviceId)
                 .build();
-    }
+    }*/
 
     // 비밀번호 암호화
     public User toEntity(String encodedPassword) {
