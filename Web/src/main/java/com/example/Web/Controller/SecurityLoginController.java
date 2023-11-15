@@ -6,6 +6,8 @@ import com.example.Web.Domain.User;
 import com.example.Web.Domain.UserRole;
 import com.example.Web.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,20 +20,29 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/session-login")
-public class SessionLoginController {
+@RequestMapping("/security-login")
+public class SecurityLoginController {
 
     private final UserService userService;
 
     @GetMapping(value = {"", "/"})
     public String home(Model model, @SessionAttribute(name = "userId", required = false) Long userId) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
-        User loginUser = userService.getLoginUserById(userId);
+      /*  User loginUser = userService.getLoginUserById(userId); // security가 로그인, 로그아웃, 인증, 인가 모두 진행
 
         if(loginUser != null) {
             model.addAttribute("name", loginUser.getName());
+        }*/
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth != null) {
+            User loginUser = userService.getLoginUserByLoginId(auth.getName());
+            if(loginUser != null) {
+                model.addAttribute("name", loginUser.getName());
+            }
         }
 
         return "home";
@@ -39,8 +50,8 @@ public class SessionLoginController {
 
     @GetMapping("/join")
     public String joinPage(Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("joinRequest", new JoinRequest());
         return "join";
@@ -48,8 +59,8 @@ public class SessionLoginController {
 
     @PostMapping("/join")
     public String join(@Valid @ModelAttribute JoinRequest joinRequest, BindingResult bindingResult, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         // loginId 중복 체크
         if(userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
@@ -66,23 +77,23 @@ public class SessionLoginController {
         }
 
         userService.join(joinRequest);
-        return "redirect:/session-login";
+        return "redirect:/security-login";
     }
 
     @GetMapping("/login")
     public String loginPage(Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("loginRequest", new LoginRequest());
         return "login";
     }
 
-    @PostMapping("/login")
+   /* @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest loginRequest, BindingResult bindingResult,
                         HttpServletRequest httpServletRequest, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         User user = userService.login(loginRequest);
 
@@ -104,31 +115,31 @@ public class SessionLoginController {
         session.setAttribute("userId", user.getId());
         session.setMaxInactiveInterval(1800); // Session이 30분동안 유지
 
-        return "redirect:/session-login";
-    }
+        return "redirect:/security-login";
+    }*/
 
-    @GetMapping("/logout")
+   /* @GetMapping("/logout")
     public String logout(HttpServletRequest request, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         HttpSession session = request.getSession(false);  // Session이 없으면 null return
         if(session != null) {
             session.invalidate();
         }
-        return "redirect:/session-login";
-    }
+        return "redirect:/security-login";
+    }*/
 
     @GetMapping("/log")
     public String log(@SessionAttribute(name = "userId", required = false) Long userId, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         User loginUser = userService.getLoginUserById(userId);
 
-        if(loginUser == null) {
-            return "redirect:/session-login/login";
-        }
+        /*if(loginUser == null) {
+            return "redirect:/security-login/login";
+        }*/
 
         model.addAttribute("user", loginUser);
         final String redirectUrl = "redirect:http://localhost:5601";
@@ -137,20 +148,17 @@ public class SessionLoginController {
 
     @GetMapping("/streaming")
     public String streaming(@SessionAttribute(name = "userId", required = false) Long userId, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
 
         User loginUser = userService.getLoginUserById(userId);
 
-        if(loginUser == null) {
-            return "redirect:/session-login/login";
-        }
+        /*if(loginUser == null) {
+            return "redirect:/security-login/login";
+        }*/
 
-        if(!loginUser.getRole().equals(UserRole.ADMIN)) {
-            final String redirectUrl = "redirect:http://localhost:5000";
-            return redirectUrl;
-        }
-
-        return "streaming";
+        model.addAttribute("user", loginUser);
+        final String redirectUrl = "redirect:http://localhost:5000";
+        return redirectUrl;
     }
 }
