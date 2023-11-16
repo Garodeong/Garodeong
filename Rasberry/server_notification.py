@@ -17,8 +17,9 @@ def threaded(client_socket, addr):
             # We label classes with the format ,{int: name}
             # Raw data follow this format. ex) {2: 'scooter'}
             # So, we should extract only class names. 
+            data = data.decode()
             data = data.split("'")[1]
-            print("Recieved from " + addr[0], ":", addr[1], data.decode())
+            print("Recieved from " + addr[0], ":", addr[1], data)
             speak.speak(msg=data)
             
         except ConnectionResetError as e:
