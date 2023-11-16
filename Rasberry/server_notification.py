@@ -14,6 +14,10 @@ def threaded(client_socket, addr):
             data = client_socket.recv(1024)
             if not data:
                 break
+            # We label classes with the format ,{int: name}
+            # Raw data follow this format. ex) {2: 'scooter'}
+            # So, we should extract only class names. 
+            data = data.split("'")[1]
             print("Recieved from " + addr[0], ":", addr[1], data.decode())
             speak.speak(msg=data)
             

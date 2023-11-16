@@ -93,8 +93,10 @@ output = StreamingOutput()
 picam2.start_recording(JpegEncoder(), FileOutput(output))
 
 try:
-    address = ('192.168.200.150', 8000) # 스트리밍용 주소 ==> 라즈베리파이 ip 주소
-    HOST = '192.168.200.169' # 로컬 노트북과 소켓통신할 ip, port
+    #address = ('192.168.200.150', 8000) # 스트리밍용 주소 ==> 라즈베리파이 ip 주소
+    address = ('192.168.46.38', 8000)
+    #HOST = '192.168.200.169' # 로컬 노트북과 소켓통신할 ip, port
+    HOST = '192.168.46.119' # 로컬 노트북과 소켓통신할 ip, port
     PORT = 8080
 
     data = f"{address[0]}:{address[1]}"
