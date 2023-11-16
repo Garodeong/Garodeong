@@ -20,5 +20,9 @@ public class User {
     private String password;
     private String deviceId;
 
+    //소셜 로그인 시 생성
+    private String provider;
+    private String providerId;
+
     private UserRole role;
 }

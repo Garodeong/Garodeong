@@ -18,19 +18,25 @@
 ### 2-3. 개발 환경
 
 ```bash
-JAVA : 11 
-FRAMEWORK : SPRINGBOOT(2.7.17) 
-DATABASE : MARIADB
-ORM : JPA
+* BE
+  JAVA : 11 
+  FRAMEWORK : SPRINGBOOT(2.7.17) 
+  DATABASE : MARIADB
+  ORM : JPA
+* FE
+  HTML5, CSS
 ```
 
 ### 2-4. 주요 기능
 
 ```bash
 * 로그인
-  -로그인 시 세션 생성
-  -세큐리티 기능 추가 - 보안 강화
-  -소셜 로그인 구현 예정
+  -로그인 시 세션 생성 (23. 11. 10)
+  -세큐리티 기능 추가 - 보안 강화(23. 11. 15)
+  -소셜 로그인
+    -구글(23. 11. 16)
+    -카카오
+    -네이버
   -ID, PW 찾기 구현 예정
  
 * 회원 가입
