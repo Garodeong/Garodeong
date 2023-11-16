@@ -3,6 +3,10 @@ package com.example.Web.Service;
 import com.example.Web.Domain.User;
 import com.example.Web.Domain.UserRole;
 import com.example.Web.Repository.UserRepository;
+import com.example.Web.UserInfo.GoogleUserInfo;
+import com.example.Web.UserInfo.KaKaoUserInfo;
+import com.example.Web.UserInfo.NaverUserInfo;
+import com.example.Web.UserInfo.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,12 +31,30 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("getAttributes : {}", oAuth2User.getAttributes());
 
+        OAuth2UserInfo oAuth2UserInfo = null;
+
         String provider = userRequest.getClientRegistration().getRegistrationId();
-        String providerId = oAuth2User.getAttribute("sub");
+
+        if(provider.equals("google")) {
+            log.info("구글 로그인 요청");
+            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        }
+        else if(provider.equals("kakao")) {
+            log.info("카카오 로그인 요청");
+            oAuth2UserInfo = new KaKaoUserInfo(oAuth2User.getAttributes());
+        }
+        else if(provider.equals("naver")) {
+            log.info("네이버 로그인 요청");
+            oAuth2UserInfo = new NaverUserInfo(oAuth2User.getAttributes());
+        }
+
+        String providerId = oAuth2UserInfo.getProviderId();
+        String email = oAuth2UserInfo.getEmail();
         String loginId = provider + "_" + providerId;
+        String name = oAuth2UserInfo.getName();
 
         Optional<User> optionalUser = userRepository.findByLoginId(loginId);
-        User user;
+        User user = null;
 
         if(optionalUser.isEmpty()) {
             user = User.builder()

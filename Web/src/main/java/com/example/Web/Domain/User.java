@@ -23,6 +23,7 @@ public class User {
     //소셜 로그인 시 생성
     private String provider;
     private String providerId;
+    private String Email;
 
     private UserRole role;
 }
