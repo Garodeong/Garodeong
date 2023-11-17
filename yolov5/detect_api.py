@@ -85,7 +85,7 @@ def make_dir(
 @smart_inference_mode()
 def api(
         model, stride, names, pt, imgsz, save_dir, 
-        HOST, PORT,
+        HOST, PORT,device,
         source=ROOT / 'data/images',  # file/dir/URL/glob/screen/0(webcam)    
         
         conf_thres=0.25,  # confidence threshold
@@ -114,7 +114,18 @@ def api(
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
     webcam = source.isnumeric() or source.endswith('.streams') or (is_url and not is_file)
     screenshot = source.lower().startswith('screen')
-    objs = defaultdict(int) # for beep
+    int_to_names = {0:'stairs',
+                    1:'pothoel',
+                    2:'scooter',
+                    3:'traffic cone',
+                    4:'cyclist',
+                    5:'person',
+                    6:'others'}
+    cls_frame = [0,0,0,0,0,0,0] # for beep
+    cls_still = [0,0,0,0,0,0,0]
+
+    send_threshold = 15 if device=='cpu' else 60 # CPU로 처리시 15, GPU로 처리시 150
+    still_threshold = 4
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((HOST, PORT))
@@ -139,7 +150,11 @@ def api(
     # Dataloader
     bs = 1  # batch_size
     if webcam:
+        # webcam일 경우, view_img 인자와 상관없이 반드시 opencv로 window 띄운다.
+        # 근데, 코드를 보니, url일 경우, webcam으로 친다.
+        # 그래서, url은 view_img인자에 영향을 받도록 한다.
         view_img = check_imshow(warn=True)
+        print('view_img:', view_img)
         dataset = LoadStreams(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
         bs = len(dataset)
     elif screenshot:
@@ -206,23 +221,62 @@ def api(
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
             #import pdb
             #pdb.set_trace()
+            objs = det[:, 5].unique()
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
                 # Print results
-                for c in det[:, 5].unique():
+                for c in objs:
                     n = (det[:, 5] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                    objs[int(c)] += 1
+                    cls_frame[int(c)] += 1
                     """
                     여기에 알림 정책을 넣으면 될 듯.
                     # beep when we detect the same class for 5 frames
                     if objs[int(c)] >= 5:
                         sd.Beep(1000,2000)
+
+                    # 탐지 신호 보내기
+                    1. 객체가 탐지 되었다면, objs += 1
+                    2. 3연속 탐지 되었다면, send하고, objs 0으로 초기화. + flag를 1로 초기화
+                    
+                    # 사라짐 신호 보내기 
+                    1. 해당 객체가 탐지 되지 않을 때 마다, flag *= 2
+                    2. flag가 2*3이라면, send하고, flag 0으로 reset
+
+                    # 탐지가 계속 되면, 20~30 frame 지속된다면, 다시 remind 신호 보내기
+                    1. 객체가 탐지되었고, flag가 1이상이라면, frame += 1
+                    2. frame == 20~30 이라면, remind 신호 보내고, frame 0으로 reset
                     """
-                    if objs[int(c)] >= 5:
-                        client_socket.send(names[int(c)].encode())
+                    #print(f"cls_frame: {cls_frame}")
+                    #print(f"cls_still: {cls_still}")
+                    
+                    if cls_frame[int(c)] >= send_threshold and not cls_still[int(c)]:
+                        data =  f"There is a new {str(names[int(c)][int(c)])}."
+                        """
+                        from gtts import gTTS
+                        gtts = gTTS(data, lang='en')
+                        filename = "C:/Users/Nabong/Desktop/Garodeong/Rasberry/tts.mp3"
+                        gtts.save(filename)
+                        with open(filename, 'rb') as file:
+                            while True:
+                                data = file.read(1024)
+                                if not data:
+                                    break        
+                                client_socket.send(data)
+                        """
+                        client_socket.send(data.encode())
+                        cls_frame[int(c)] = 0
+                        cls_still[int(c)] = 1
+                    elif cls_frame[int(c)] >= send_threshold and cls_still[int(c)]:
+                        cls_still[int(c)] += 1
+                        cls_frame[int(c)] = 0
+                    elif cls_still[int(c)] >= still_threshold:
+                        data =  f"There is still a {str(names[int(c)][int(c)])}."
+                        client_socket.send(data.encode())
+                        cls_still[int(c)] = 1
+                        cls_frame[int(c)] = 0
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
@@ -245,19 +299,33 @@ def api(
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-            else:
-                # 탐지 객체 없을 때
-                objs = defaultdict(int)
+            
+            all_obj = set(map(int, objs))
+            disappear = {0,1,2,3,4,5,6} - all_obj
+            for elem in disappear:
+                if cls_still[elem]:
+                    cls_frame[elem] -= 1
+            for idx, count in enumerate(cls_frame):
+                if count <= -send_threshold:
+                    data = f"The {names[int(idx)][int(idx)]} disappears."
+                    client_socket.send(data.encode())
+                    cls_frame[idx] = 0
+                    cls_still[idx] = 0
             # Stream results
             im0 = annotator.result()
+            
             if view_img:
                 if platform.system() == 'Linux' and p not in windows:
-                    windows.append(p)
-                    cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
-                    cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
-                cv2.imshow(str(p), im0)
+                    #windows.append(p)
+                    windows.append(f"{HOST}:{PORT}")
+                    #cv2.namedWindow(str(p), cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                    cv2.namedWindow(f"{HOST}:{PORT}", cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)  # allow window resize (Linux)
+                    #cv2.resizeWindow(str(p), im0.shape[1], im0.shape[0])
+                    cv2.resizeWindow(f"{HOST}:{PORT}", im0.shape[1], im0.shape[0])
+                #cv2.imshow(str(p), im0)
+                cv2.imshow(f"{HOST}:{PORT}", im0)
                 cv2.waitKey(1)  # 1 millisecond
-
+            
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
@@ -294,7 +362,8 @@ def api(
 #api(weights=f"{ROOT}/yolov5s.pt",view_img=True, source=0, save_txt=True, device='')
 if __name__=="__main__":    
     #model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/customdataset_epoch100.pt", device='')
-    model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/yolov5s.pt", device='')
-    save_dir = make_dir()
-    api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,client_socket=client_socket,
-    view_img=True, source="http://192.168.200.150:8000/stream.mjpg", save_txt=False)
+    #model, stride, names, pt, imgsz = model_load(weights=f"{ROOT}/yolov5s.pt", device='')
+    #save_dir = make_dir()
+    #api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,HOST='1.1.1.1', PORT=2,
+    #view_img=True, source=0, save_txt=False)
+    pass
