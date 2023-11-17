@@ -4,28 +4,29 @@
 import _thread
 import socket
 import speak
+import os
 
 
 def threaded(client_socket, addr):
     print("Connected by: ", addr[0], addr[1])
-
     while True:
         try:
             data = client_socket.recv(1024)
-            if not data:
-                break
-            # We label classes with the format ,{int: name}
-            # Raw data follow this format. ex) {2: 'scooter'}
-            # So, we should extract only class names. 
             data = data.decode()
-            data = data.split("'")[1]
             print("Recieved from " + addr[0], ":", addr[1], data)
-            speak.speak(msg=data)
+            data = data.split(".")
+            data.pop()
+            data = set(data)
+            
+            for elem in data:
+                speak.speak(msg=elem)
+            #time.sleep() # 많은 객체가 탐지되면, 말이 중첩돼서, 일부러 1초 간격을 두게끔 한다.
             
         except ConnectionResetError as e:
             print("Disconnected by", addr[0], ":", addr[1])
             print(f"Error: {e}")
 
+    
 
 ip = "0.0.0.0"
 port = 8081     
