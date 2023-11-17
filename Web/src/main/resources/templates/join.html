@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div>
+<div class="join_box">
     <h1><a th:href="|/${loginType}|">[[가로등]]</a></h1> <hr/>
     <h2>회원 가입</h2>
     <form th:method="post" th:action="|@{/{loginType}/join (loginType=${loginType})}|" th:object="${joinRequest}">

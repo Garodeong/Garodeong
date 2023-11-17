@@ -15,10 +15,29 @@ body {
     background-size: cover;
 }
 
+hr{
+    width: 130%;
+}
+
+h1{
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-left: 100px;
+    text-align: center;
+}
+
 h2{
     font-size: 24px;
     color: #ffffff;
     margin-bottom: 10px;
+    margin-left: 100px;
+    text-align: center;
+}
+
+h3{
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 30px;
     text-align: center;
 }
 
@@ -138,4 +157,15 @@ button{
 a {
     text-decoration-line: none;
     color: #ffffff;
+}
+
+/*
+*소셜 로그인
+*/
+.google{
+    margin-right: 25px;
+}
+
+.kakao{
+    margin-right: 25px;
 }
