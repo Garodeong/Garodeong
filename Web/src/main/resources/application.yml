@@ -40,7 +40,7 @@ spring:
             client-id: Lps5WiAdx4tmAig0VNzd
             client-secret: R_nht0cUQv
             client-name: Naver
-            redirect-uri: http://localhost:8080/security-login/ouath2/code/naver
+            redirect-uri: http://localhost:8080/login/ouath2/code/naver
             authorization-grant-type: authorization_code
             scope:
               - name
@@ -50,7 +50,7 @@ spring:
             client-secret: KDReR7e5BqxvYQOJIQnImPwthVPY9yei
             client-name: Kakao
             client-authentication-method: POST
-            redirect-uri: http://localhost:8080/security-login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             scope:
               - profile_nickname
