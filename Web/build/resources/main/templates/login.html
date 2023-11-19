@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="|${pageName}|"></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="login_box">
+    <h2>가로등</h2>
+    <form th:method="post" th:action="|@{/{loginType}/login (loginType=${loginType})}|" th:object="${loginRequest}">
+        <div>
+            <label th:for="loginId">아이디 </label>
+            <input type="text" th:field="*{loginId}" th:errorclass="error-input"/>
+            <div class="error-class" th:errors="*{loginId}"></div>
+        </div>
+        <br/>
+        <div>
+            <label th:for="password">비밀번호</label>
+            <input type="password" th:field="*{password}"th:errorclass="error-input"/>
+            <div class="error-class" th:errors="*{password}"></div>
+        </div>
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <br/>
+            <div class="error-class" th:each="error : ${#fields.globalErrors()}" th:text="${error}" />
+        </div>
+        <br/>
+        <br/>
+        <button type="submit">로그인</button>
+        <div class="space">
+        </div>
+        <button type="button" th:onclick="|location.href='@{/{loginType}/join (loginType=${loginType})}'|">회원 가입</button> <br/><br/>
+        <a class="google" href="/oauth2/authorization/google">구글 로그인</a>
+        <a class="kakao" href="/oauth2/authorization/kakao">카카오 로그인</a>
+        <a class="naver" href="/oauth2/authorization/naver">네이버 로그인</a>
+    </form>
+</div>
+</body>
+</html>
+
+<style>
+    .error-class {
+        color: red;
+    }
+    .error-input {
+        border-color: red;
+    }
+</style>
