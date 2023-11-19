@@ -39,6 +39,10 @@ import socket
 
 import torch
 
+from datetime import datetime
+from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import NotFoundError, ConnectionError
+
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -53,6 +57,28 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
                            increment_path, non_max_suppression, print_args, scale_boxes, strip_optimizer, xyxy2xywh)
 from utils.torch_utils import select_device, smart_inference_mode
 
+
+def insertData(detection):
+    try:
+        # 환경 변수에서 사용자 이름과 비밀번호 가져오기
+        es_username = "elastic"
+        es_password = "changeme"
+        es = Elasticsearch(
+            ['http://localhost:9200'],
+            basic_auth=(es_username, es_password)
+        )
+        index = "garodeong-user01"
+
+        # Elasticsearch에 데이터 삽입
+        es.index(index=index, body=detection)
+        # LOGGER.info("Data insertion successful")
+    # except ConnectionError as e:
+    #     LOGGER.error(e)
+    # except NotFoundError as e:
+    #     LOGGER.error(e)
+    except Exception as e:
+        pass
+        # LOGGER.error("Error inserting data into Elasticsearch:", e)
 
 def model_load(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -177,6 +203,18 @@ def api(
         with dt[1]:
             visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
             pred = model(im, augment=augment, visualize=visualize)
+            
+            for _, row in pred.pandas().xyxy[0]:
+                prediction = {
+                    'detection': row['name'],
+                    'confidence': row['confidence'],
+                    'xmin': row['xmin'],
+                    'ymin': row['ymin'],
+                    'xmax': row['xmax'],
+                    'ymax': row['ymax'],
+                    "@timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+                }
+                insertData(prediction)
 
         # NMS
         with dt[2]:

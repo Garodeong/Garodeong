@@ -7,16 +7,23 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from yolov5 import detect_api
 
+SAVE_DIR = ""
+
+def make_dir(name="raspi"):
+    save_dir = detect_api.make_dir(name)
+    SAVE_DIR = save_dir
+    return save_dir
+
+def get_save_dir():
+    return SAVE_DIR + "/stream.mp4"
 
 def threaded(client_socket, addr):
     device = ""  # CPU는 cpu, 기본 GPU는 빈 문자열
     print("Connected by: ", addr[0], addr[1])
     model, stride, names, pt, imgsz = detect_api.model_load(weights='/Users/Nabong/Desktop/capstone/Garodeung/yolov5/customdataset_epoch100.pt', device=device)
-    save_dir = detect_api.make_dir(name="raspi")
+    save_dir = make_dir(name="raspi")
     print("Model Loading Success!!!")
 
-    
-    
     data = client_socket.recv(1024).decode()
     tmp = data.split(":")
     HOST = tmp[0]
@@ -28,7 +35,6 @@ def threaded(client_socket, addr):
     source = f"http://{data}/stream.mjpg"
     print("Source : ",source)
     detect_api.api(model=model,stride=stride,names=names,pt=pt,imgsz=imgsz,save_dir=save_dir,HOST=HOST,PORT=PORT,view_img=True, source=source, save_txt=False, device=device)
-
 
 ip = "0.0.0.0"
 port = 8080
