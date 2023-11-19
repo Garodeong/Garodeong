@@ -53,7 +53,7 @@ def parse_detection_log(log):
 class VideoCamera(object):
     def __init__(self, video_path):
         self.video = cv2.VideoCapture(video_path)
-        print(self.video_path)
+        print(f"save_dir: {self.save_dir}")
 
         self.img_size = 640
         self.conf_thres = 0.25
