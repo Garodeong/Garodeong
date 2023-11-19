@@ -54,6 +54,7 @@ class VideoCamera(object):
     def __init__(self):
         self.save_dir = server_getIP.get_save_dir()
         self.video = cv2.VideoCapture(self.save_dir)
+        print(self.save_dir)
 
         self.img_size = 640
         self.conf_thres = 0.25
