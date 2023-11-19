@@ -5,24 +5,3 @@
 http.host: 0.0.0.0
 
 node.name: logstash
-
-input {
-  http {
-    host => "0.0.0.0" # 모든 인터페이스에서 데이터를 받음
-    port => 5044 # 사용할 포트 번호
-  }
-}
-
-filter {
-  # 필요한 데이터 처리를 여기서 구현
-}
-
-output {
-  elasticsearch {
-    hosts => ["elasticsearch:9200"]
-    index => "yolov5-detections-%{+YYYY.MM.dd}"
-    # 필요하다면 여기에 사용자 인증 정보를 추가
-    user => "elastic"
-    password => "7430xR=so-IqG81g4jTZ"
-  }
-}

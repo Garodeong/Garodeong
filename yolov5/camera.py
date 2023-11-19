@@ -4,8 +4,14 @@ import cv2
 import torch
 import numpy as np
 import requests, json
+import logging
+import datetime
 from pathlib import Path
+from datetime import datetime
+from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import NotFoundError, ConnectionError
 
+logging.basicConfig(level=logging.INFO)
 
 # print(model_path)
 model_path = 'stairv2_epoch100.pt'
@@ -16,6 +22,27 @@ model = torch.hub.load('/Users/kakaogames/personal/Garodeung/yolov5',
                        source='local',  # 로컬 파일 시스템을 지정합니다.
                        pretrained=True, # 이 옵션이 작동하려면 로컬 가중치 파일이 있어야 합니다.
                        verbose=True)
+
+def insertData(detection):
+    try:
+        # 환경 변수에서 사용자 이름과 비밀번호 가져오기
+        es_username = "elastic"
+        es_password = "changeme"
+        es = Elasticsearch(
+            ['http://localhost:9200'],
+            basic_auth=(es_username, es_password)
+        )
+        index = "garodeong-user01"
+
+        # Elasticsearch에 데이터 삽입
+        es.index(index=index, body=detection)
+        logging.info("Data insertion successful")
+    except ConnectionError as e:
+        logging.error(e)
+    except NotFoundError as e:
+        logging.error(e)
+    except Exception as e:
+        print("Error inserting data into Elasticsearch:", e)
 
 def parse_detection_log(log):
     # 'image 1/1:'과 'Speed:' 사이의 부분을 추출합니다.
@@ -30,14 +57,7 @@ def parse_detection_log(log):
 
 class VideoCamera(object):
     def __init__(self):
-        # Using OpenCV to capture from device 0. If you have trouble capturing
-        # from a webcam, comment the line below out and use a video file
-        # instead.
         self.video = cv2.VideoCapture(0)
-        # self.video = cv2.resize(self.video,(840,640))
-        # If you decide to use video.mp4, you must have this file in the folder
-        # as the main.py.
-        # self.video = cv2.VideoCapture('video.mp4')
 
         self.weights = 'stairv2_epoch100.pt'
         self.img_size = 640
@@ -58,27 +78,19 @@ class VideoCamera(object):
         detections = []
         
         new_log = results.pandas().xyxy[0]
-        print(new_log)    
         for _, row in new_log.iterrows():
-            detections.append({
-                'name': row['name'],
+            detection = {
+                'detection': row['name'],
                 'confidence': row['confidence'],
                 'xmin': row['xmin'],
                 'ymin': row['ymin'],
                 'xmax': row['xmax'],
-                'ymax': row['ymax']
-            })
+                'ymax': row['ymax'],
+                "@timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+            }
+            insertData(detection)
 
-        url = "http://localhost:5044"
-        headers = {'Content-Type': 'application/json'}
-        # print(detections)
-        # response = requests.post(url, data=json.dumps(detections), headers=headers, timeout=10)
-        # print(response.text)
-        # Render results on the frame
-        # rendered_img = results.render()[0]
         a = np.squeeze(results.render())
-        # We are using Motion JPEG, but OpenCV defaults to capture raw images,
-        # so we must encode it into JPEG in order to correctly display the
-        # video stream.
         ret, jpeg = cv2.imencode('.jpg', image)
+
         return jpeg.tobytes()

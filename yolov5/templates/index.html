@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+    <title>Live Streaming Demonstration</title>
+    <meta name="description" content="Live streaming demonstration page">
+    <meta name="keywords" content="live, streaming, video, demonstration">
+</head>
+<body>
+    <div class="container">
+        <header class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <h1 class="mt-5">Live Streaming</h1>
+            </div>
+        </header>
+        <main class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <img src="{{ url_for('video_feed') }}" alt="Live streaming video" style="max-width: 100%; height: auto;">
+            </div>
+        </main>
+    </div>
+</body>
+</html>

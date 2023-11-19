@@ -17,8 +17,7 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     volumes:
-      - /opt/homebrew/var/log/nginx:/var/log/ngnix:ro
-      - ./extensions/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:rwx,Z
+      - ./extensions/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro,Z
       - type: bind
         source: /var/lib/docker/containers
         target: /var/lib/docker/containers
@@ -28,7 +27,7 @@ services:
         target: /var/run/docker.sock
         read_only: true
     environment:
-      FILEBEAT_INTERNAL_PASSWORD:  ${FILEBEAT_INTERNAL_PASSWORD:-}
+      FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}
       BEATS_SYSTEM_PASSWORD: ${BEATS_SYSTEM_PASSWORD:-}
     networks:
       - elk
