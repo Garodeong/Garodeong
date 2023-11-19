@@ -1,8 +1,10 @@
 import os
+import sys
 from camera import VideoCamera
 from flask import Flask, render_template, Response, request, redirect, url_for, session
 
 app = Flask(__name__)
+video_path = sys.argv[1]
 
 @app.route('/')
 # @login_required
@@ -18,8 +20,11 @@ def gen(camera):
 @app.route('/video_feed')
 # @login_required
 def video_feed():
-    return Response(gen(VideoCamera()),
+    return Response(gen(VideoCamera(video_path)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-if __name__ == '__main__':
+def main():
     app.run(host='0.0.0.0', debug=True)
+
+if __name__ == '__main__':
+    main()

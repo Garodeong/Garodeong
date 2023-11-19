@@ -3,6 +3,7 @@ import socket
 import struct
 import os
 import sys
+import subprocess
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from yolov5 import detect_api
@@ -15,7 +16,7 @@ def make_dir(name="raspi"):
     return save_dir
 
 def get_save_dir():
-    return SAVE_DIR + "/stream.mp4"
+    return SAVE_DIR + "stream.mp4"
 
 def threaded(client_socket, addr):
     device = ""  # CPU는 cpu, 기본 GPU는 빈 문자열
@@ -55,6 +56,7 @@ if __name__=="__main__":
             print("wait")
             cs, addr = server_socket.accept()
             _thread.start_new_thread(threaded, (cs, addr))
+            subprocess.run(["C:/Users/Nabong/anaconda3/envs/capstone/python.exe", "C:/Users/Nabong/Desktop/capstone/Garodeong/yolov5/app.py", SAVE_DIR + "/stream.mp4"])
         except Exception as e:
             print(f"Error: {e}")
             break
