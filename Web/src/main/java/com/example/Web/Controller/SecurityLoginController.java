@@ -151,6 +151,8 @@ public class SecurityLoginController {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
+        String os = System.getenv("JAVA_HOME");
+
         User loginUser = userService.getLoginUserById(userId);
 
         /*if(loginUser == null) {
@@ -158,7 +160,7 @@ public class SecurityLoginController {
         }*/
 
         model.addAttribute("user", loginUser);
-        final String redirectUrl = "redirect:http://localhost:5000";
+        final String redirectUrl = "redirect:http://localhost:os";
         return redirectUrl;
     }
 }
