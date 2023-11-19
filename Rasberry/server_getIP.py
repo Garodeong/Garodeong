@@ -12,19 +12,14 @@ SAVE_DIR = ""
 
 def make_dir(name="raspi"):
     save_dir = detect_api.make_dir(name)
-    SAVE_DIR = save_dir
     return save_dir
 
 def get_save_dir():
     return SAVE_DIR + "stream.mp4"
 
-def threaded(client_socket, addr):
-    device = ""  # CPU는 cpu, 기본 GPU는 빈 문자열
-    print("Connected by: ", addr[0], addr[1])
-    model, stride, names, pt, imgsz = detect_api.model_load(weights='C:/Users/Nabong/Desktop/capstone/Garodeong/yolov5/customdataset_epoch100.pt', device=device)
-    save_dir = make_dir(name="raspi")
-    print("Model Loading Success!!!")
-
+def threaded(client_socket, addr, model, stride, names, pt, imgsz, save_dir):
+    
+   
     data = client_socket.recv(1024).decode()
     tmp = data.split(":")
     HOST = tmp[0]
@@ -40,6 +35,12 @@ def threaded(client_socket, addr):
 if __name__=="__main__":
     ip = "0.0.0.0"
     port = 8080
+    concurrent_user = 0
+    python_exe = "C:/Users/Nabong/anaconda3/envs/capstone/python.exe"
+    script_path = "C:/Users/Nabong/Desktop/capstone/Garodeong/yolov5/app.py"
+    video_path = SAVE_DIR + "/stream.mp4"
+    device = ""  # CPU는 cpu, 기본 GPU는 빈 문자열
+
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -55,8 +56,17 @@ if __name__=="__main__":
         try:
             print("wait")
             cs, addr = server_socket.accept()
-            _thread.start_new_thread(threaded, (cs, addr))
-            subprocess.run(["C:/Users/Nabong/anaconda3/envs/capstone/python.exe", "C:/Users/Nabong/Desktop/capstone/Garodeong/yolov5/app.py", SAVE_DIR + "/stream.mp4"])
+            
+            # Connection Success
+            print("Connected by: ", addr[0], addr[1])
+            model, stride, names, pt, imgsz = detect_api.model_load(weights='C:/Users/Nabong/Desktop/capstone/Garodeong/yolov5/customdataset_epoch100.pt', device=device)
+            save_dir = make_dir(name="raspi")
+            print("Model Loading Success!!!")
+            _thread.start_new_thread(threaded, (cs, addr, model, stride, names, pt, imgsz, save_dir))
+
+            # Streaming website multi-processing
+            concurrent_user += 1
+            subprocess.run([python_exe, script_path, save_dir+"/stream.mp4", concurrent_user])
         except Exception as e:
             print(f"Error: {e}")
             break
