@@ -102,8 +102,13 @@ def make_dir(
         exist_ok=False,  # existing project/name ok, do not increment
         save_txt=False,  # save results to *.txt
 ):
+    print(f"ROOT: {ROOT}")
+    print(f"ROOT: {project}, type:{type(project)}")
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
+    print(f"Increat save_dir: {save_dir}, type: {type(save_dir)}")
     (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
+    print(f"final save_dir: {save_dir}, type:{type(save_dir)}")
+    
 
     return save_dir
     
@@ -203,18 +208,6 @@ def api(
         with dt[1]:
             visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
             pred = model(im, augment=augment, visualize=visualize)
-            """
-            for _, row in pred.xyxy[0]:
-                prediction = {
-                    'detection': row['name'],
-                    'confidence': row['confidence'],
-                    'xmin': row['xmin'],
-                    'ymin': row['ymin'],
-                    'xmax': row['xmax'],
-                    'ymax': row['ymax'],
-                    "@timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-                }
-                insertData(prediction)"""
 
         # NMS
         with dt[2]:
@@ -310,12 +303,10 @@ def api(
                         cls_frame[int(c)] = 0
                     elif cls_still[int(c)] >= still_threshold:
                         data =  f"There is still a {str(names[int(c)][int(c)])}."
-                        client_socket.sensetd(data.encode())
+                        client_socket.send(data.encode())
                         cls_still[int(c)] = 1
                         cls_frame[int(c)] = 0
                 # Write results
-                #import pdb
-                #pdb.set_trace()
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
                     label = names[c] if hide_conf else f'{names[c]}'
@@ -348,8 +339,10 @@ def api(
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
-                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True) 
             
+            # 특정 객체들이 탐지 되지 않았을때, 연속성을 없애는 코드
+            # 연속적인 프레임에서 객체가 탐지되길 원하기 때문
             all_obj = set(map(int, objs))
             disappear = {0,1,2,3,4,5,6} - all_obj
             for elem in disappear:
@@ -361,9 +354,11 @@ def api(
                     client_socket.send(data.encode())
                     cls_frame[idx] = 0
                     cls_still[idx] = 0
+
             # Stream results
             im0 = annotator.result()
-            
+            #import pdb
+            #pdb.set_trace()
             if view_img:
                 if platform.system() == 'Linux' and p not in windows:
                     #windows.append(p)
@@ -375,8 +370,10 @@ def api(
                 #cv2.imshow(str(p), im0)
                 cv2.imshow(f"{HOST}:{PORT}", im0)
                 cv2.waitKey(1)  # 1 millisecond
-            
+            import pdb
+            pdb.set_trace()
             # Save results (image with detections)
+            # 이 부분만 되면 스트리밍 완료
             if save_img:
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
@@ -394,6 +391,7 @@ def api(
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
+
 
         # Print time (inference-only)
         #LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")

@@ -52,8 +52,9 @@ def parse_detection_log(log):
 
 class VideoCamera(object):
     def __init__(self, video_path):
-        self.video = cv2.VideoCapture(video_path)
-        print(f"save_dir: {self.save_dir}")
+        print(video_path)
+        self.video = cv2.VideoCapture(str(video_path))
+        print(f"save_dir: {video_path}")
 
         self.img_size = 640
         self.conf_thres = 0.25
@@ -65,9 +66,9 @@ class VideoCamera(object):
         self.video.release()
     
     def get_frame(self):
-        success, image = self.video.read()
+        success, image = self.video.read() # source
 
-        # results = model(image)
+        # results = model(image)   # inference ==> 
         # a = np.squeeze(results.render())
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()

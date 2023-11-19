@@ -17,6 +17,7 @@ yolov5/.gitattributes
 yolov5/.gitignore
 yolov5/README.md
 yolov5/README.zh-CN.md
+yolov5/render_test.py
 
 yolov5/*.mp4
 yolov5/*.jpg
