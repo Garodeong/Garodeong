@@ -52,7 +52,6 @@ def parse_detection_log(log):
 
 class VideoCamera(object):
     def __init__(self, video_path):
-        self.save_dir = server_getIP.get_save_dir()
         self.video = cv2.VideoCapture(video_path)
         print(f"save_dir: {self.save_dir}")
 
