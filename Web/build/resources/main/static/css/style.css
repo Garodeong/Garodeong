@@ -1,0 +1,171 @@
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #fff;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-image: url("../image/가로등.jpeg");
+    background-size: cover;
+}
+
+hr{
+    width: 130%;
+}
+
+h1{
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-left: 100px;
+    text-align: center;
+}
+
+h2{
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    margin-left: 100px;
+    text-align: center;
+}
+
+h3{
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login_name{
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    text-indent: 90px;
+}
+
+.login_box {
+    width: 300px;
+    height: 450px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 60px 120px 40px 20px;
+    position: center;
+    bottom: -2px;
+    left: -2px;
+}
+
+.join_box{
+    width: 300px;
+    height: 650px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 60px 120px 60px 20px;
+    position: center;
+    bottom: -2px;
+    left: -2px;
+}
+
+form{
+    width: 400px;
+    height: 350px;
+    padding: 40px;
+    box-sizing: border-box;
+    border-color: black;
+}
+
+th{
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+}
+
+th > button {
+    color: #fff;
+    font-size: 16px;
+    background-color: black;
+    margin-top: 15px;
+    margin: auto;
+    display: block;
+}
+
+input{
+    width: 100%;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+
+form > button[type="submit"]{
+    color: #fff;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin: auto;
+    display: block;
+}
+
+form > button[type="button"]{
+    color: #fff;
+    font-size: 14px;
+    margin-top: 20px;
+    margin: auto;
+    display: block;
+}
+
+.space {
+    width: 4px;
+    height: auto;
+    display: inline-block;
+}
+
+label{
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/*모든 버튼*/
+button{
+    width: 220px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/*
+*외원가입 페이지 가로등
+*/
+a {
+    text-decoration-line: none;
+    color: #ffffff;
+}
+
+/*
+*소셜 로그인
+*/
+.google{
+    margin-right: 25px;
+}
+
+.kakao{
+    margin-right: 25px;
+}

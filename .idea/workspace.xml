@@ -77,9 +77,10 @@
     "list.type.of.created.stylesheet": "CSS",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "spring.configuration.checksum": "a37f7b052f1143c557dd23bde1fa6d4f"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -89,21 +90,11 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Web.test" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Web.test" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="WebApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" />
+      <envs>
+        <env name="server.port" value="9000" />
+      </envs>
       <module name="Web.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.Web.WebApplication" />
       <extension name="coverage">
@@ -135,6 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699542823467</updated>
       <workItem from="1699542824759" duration="8187000" />
+      <workItem from="1700391532445" duration="42000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1699545827015</created>
