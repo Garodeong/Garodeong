@@ -203,8 +203,8 @@ def api(
         with dt[1]:
             visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
             pred = model(im, augment=augment, visualize=visualize)
-            
-            for _, row in pred.pandas().xyxy[0]:
+            """
+            for _, row in pred.xyxy[0]:
                 prediction = {
                     'detection': row['name'],
                     'confidence': row['confidence'],
@@ -214,7 +214,7 @@ def api(
                     'ymax': row['ymax'],
                     "@timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
                 }
-                insertData(prediction)
+                insertData(prediction)"""
 
         # NMS
         with dt[2]:
@@ -257,8 +257,6 @@ def api(
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
-            #import pdb
-            #pdb.set_trace()
             objs = det[:, 5].unique()
             if len(det):
                 # Rescale boxes from img_size to im0 size
@@ -312,15 +310,29 @@ def api(
                         cls_frame[int(c)] = 0
                     elif cls_still[int(c)] >= still_threshold:
                         data =  f"There is still a {str(names[int(c)][int(c)])}."
-                        client_socket.send(data.encode())
+                        client_socket.sensetd(data.encode())
                         cls_still[int(c)] = 1
                         cls_frame[int(c)] = 0
                 # Write results
+                #import pdb
+                #pdb.set_trace()
                 for *xyxy, conf, cls in reversed(det):
                     c = int(cls)  # integer class
                     label = names[c] if hide_conf else f'{names[c]}'
                     confidence = float(conf)
                     confidence_str = f'{confidence:.2f}'
+                    prediction = {
+                    'detection': label,
+                    'confidence': confidence_str,
+                    'xmin': xyxy[0].item(),
+                    'ymin': xyxy[1].item(),
+                    'width': xyxy[2].item(),
+                    'height': xyxy[3].item(),
+                    "@timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+                    "HOST": HOST,
+                    "GPU" : device
+                        }
+                    insertData(prediction)
 
                     if save_csv:
                         write_to_csv(p.name, label, confidence_str)
