@@ -51,9 +51,9 @@ def parse_detection_log(log):
     return objects_list
 
 class VideoCamera(object):
-    def __init__(self):
+    def __init__(self, video_path):
         self.save_dir = server_getIP.get_save_dir()
-        self.video = cv2.VideoCapture(self.save_dir)
+        self.video = cv2.VideoCapture(video_path)
         print(self.save_dir)
 
         self.img_size = 640
