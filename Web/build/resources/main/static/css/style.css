@@ -12,7 +12,7 @@ body {
     align-items: center;
     background-position: center;
     background-image: url("../image/가로등1.png");
-    background-size: contain;
+    background-size: cover;
 }
 
 hr{

@@ -1,10 +1,13 @@
 package com.example.Web.Service;
 
 import com.example.Web.Domain.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import javax.validation.OverridesAttribute;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Map;

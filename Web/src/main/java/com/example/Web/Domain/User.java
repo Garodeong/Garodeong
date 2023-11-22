@@ -18,7 +18,7 @@ public class User {
     private String name;
     private String loginId;
     private String password;
-    private String deviceId;
+    private Long deviceId;
 
     //소셜 로그인 시 생성
     private String provider;
@@ -26,4 +26,6 @@ public class User {
     private String Email;
 
     private UserRole role;
+
+
 }
