@@ -5,10 +5,14 @@ import com.example.Web.DTO.LoginRequest;
 import com.example.Web.Domain.User;
 import com.example.Web.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     // Spring Security를 사용한 로그인 구현 시 사용
@@ -95,6 +100,4 @@ public class UserService {
 
         return optionalUser.get();
     }
-
-
 }

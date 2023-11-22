@@ -24,7 +24,7 @@ public class JoinRequest {
     private String name;
 
     @NotBlank(message = "기기 아이디가 비어있습니다.")
-    private String deviceId;
+    private Long deviceId;
 
     // 비밀번호 암호화 X
    /* public User toEntity() {

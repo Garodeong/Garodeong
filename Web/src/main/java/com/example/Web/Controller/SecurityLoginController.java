@@ -4,8 +4,11 @@ import com.example.Web.DTO.JoinRequest;
 import com.example.Web.DTO.LoginRequest;
 import com.example.Web.Domain.User;
 import com.example.Web.Domain.UserRole;
+import com.example.Web.Service.PrincipalDetails;
+import com.example.Web.Service.PrincipalOauth2UserService;
 import com.example.Web.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,13 +20,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/security-login")
 public class SecurityLoginController {
 
-    private final UserService userService;
+    @Autowired  private final UserService userService;
 
     @GetMapping(value = {"", "/"})
     public String home(Model model, @SessionAttribute(name = "userId", required = false) Long userId) {
@@ -87,7 +91,10 @@ public class SecurityLoginController {
 
         model.addAttribute("loginRequest", new LoginRequest());
         return "login";
+
     }
+
+
 
    /* @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest loginRequest, BindingResult bindingResult,
@@ -147,20 +154,36 @@ public class SecurityLoginController {
     }
 
     @GetMapping("/streaming")
-    public String streaming(@SessionAttribute(name = "userId", required = false) Long userId, Model model) {
+    public String streaming(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
-        String os = System.getenv("JAVA_HOME");
+        User loginUser = userService.getLoginUserByLoginId(auth.getName());
+        model.addAttribute("user", loginUser);
+        if(loginUser != null && loginUser.getDeviceId() != null) {
+            String redirectUrl = "redirect:http://localhost:" + loginUser.getDeviceId();
+            return redirectUrl;
+        }
 
-        User loginUser = userService.getLoginUserById(userId);
+        else {
+            return "redirect:/error";
+        }
+    }
 
-        /*if(loginUser == null) {
+    @GetMapping("/info")
+    public String userInfo(Model model, Authentication auth) {
+        model.addAttribute("loginType", "security-login");
+        model.addAttribute("pageName", "Security 로그인");
+
+        User loginUser = userService.getLoginUserByLoginId(auth.getName());
+
+        if(loginUser == null) {
             return "redirect:/security-login/login";
-        }*/
+        }
 
         model.addAttribute("user", loginUser);
-        final String redirectUrl = "redirect:http://localhost:os";
-        return redirectUrl;
+        return "info";
     }
+
+
 }
