@@ -7,12 +7,12 @@
 </head>
 <body>
 <div>
-    <div th:if="${name == null}">
+    <div th:if="${name == null} and ${provider == null}">
         <h3>가로등</h3>
         <button th:onclick="|location.href='@{/{loginType}/join (loginType=${loginType})}'|">회원 가입</button> <br/><br/>
         <button th:onclick="|location.href='@{/{loginType}/login (loginType=${loginType})}'|">로그인</button>
     </div>
-    <div th:unless="${name == null}">
+    <div th:unless="${name == null} and ${provider == null}">
         <button th:onclick="|location.href='@{/{loginType}/log (loginType=${loginType})}'|">로그</button> <br/><br/>
         <button th:onclick="|location.href='@{/{loginType}/streaming (loginType=${loginType})}'|">실시간 영상</button> <br/><br/>
         <button th:onclick="|location.href='@{/{loginType}/info (loginType=${loginType})}'|">유저 정보</button> <br/><br/>

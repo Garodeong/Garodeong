@@ -14,11 +14,11 @@ import javax.persistence.*;
 public class User {
     @Id @GeneratedValue
     private Long id;
+    private Long deviceId;
 
     private String name;
     private String loginId;
     private String password;
-    private Long deviceId;
 
     //소셜 로그인 시 생성
     private String provider;

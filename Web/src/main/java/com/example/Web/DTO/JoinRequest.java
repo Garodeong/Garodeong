@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class JoinRequest {
     @NotBlank(message = "이름이 비어있습니다.")
     private String name;
 
-    @NotBlank(message = "기기 아이디가 비어있습니다.")
+    @NotNull(message = "기기 아이디가 비어있습니다.")
     private Long deviceId;
 
     // 비밀번호 암호화 X
